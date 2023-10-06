@@ -1,0 +1,54 @@
+﻿@model Albergo.Models.Prenotazioni
+
+@{
+    ViewBag.Title = "CheckOut";
+}
+
+<h2>CheckOut</h2>
+
+<div>
+    <table class="table table-hover table-bordered container text-center">
+        <tr>
+            <th>Cliente</th>
+            <th>Codice Fiscale</th>
+            <th>N° Camera</th>
+            <th>Periodo</th>
+            <th>Caparra</th>
+            <th>Tariffa</th>
+        </tr>
+        <tr>
+            <td>@Model.cliente.Cognome @Model.cliente.Nome</td>
+            <td>@Model.cliente.CodiceFiscale</td>
+            <td>@Model.camera.Numero</td>
+            <td>@Model.PeriodoDal.ToShortDateString() - @Model.PeriodoAl.ToShortDateString() </td>
+            <td>@Model.Caparra.ToString("C2")</td>
+            <td>@Model.Tariffa.ToString("C2")</td>
+        </tr>
+    </table>
+    <p>Lista Servizi</p>
+
+
+    <table class="table table-hover table-bordered container text-center">
+        <tr>
+            <th>Descrizione</th>
+            <th>Prezzo</th>
+            <th>Data</th>
+            <th>Quantita</th>
+            <th>Tot € </th>
+        </tr>
+        @foreach (Albergo.Models.Servizi p in Model.ListaServizi)
+        {
+            <tr>
+                <td>@p.Descrizione</td>
+                <td>@p.Prezzo.ToString("C2")</td>
+                <td>@p.Data.ToShortDateString()</td>
+                <td>@p.Quantita</td>
+                <td>@(p.Prezzo * p.Quantita) €</td>
+            </tr>
+        }
+    </table>
+    <p>Totale da pagare: <b>
+           
+    @(Model.Tariffa - Model.Caparra + Convert.ToDouble(TempData["totServizi"])) €
+           </b> </p>
+</div>

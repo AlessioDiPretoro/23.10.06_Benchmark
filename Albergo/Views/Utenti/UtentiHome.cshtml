@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "UtentiHome";
+}
+
+<h2>Azioni riservate ai dipendenti</h2>
+
+<p class="text-center">Ciao @User.Identity.Name seleziona un'azione</p>
+
+<div class="d-flex justify-content-center gap-5">
+    <div class="">
+        @Html.ActionLink("Aggiugni camera", "AggiungiCamera", "Rooms", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+    <div class="">
+        @Html.ActionLink("Mostra le camere", "MostraCamere", "Rooms", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+    <div class="">
+        @Html.ActionLink("Aggiungi anagrafica cliente", "CreateClient", "Clients", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+    <div class="">
+        @Html.ActionLink("Mostra tutte le anagrafiche clienti", "ListaClient", "Clients", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+    <div class="">
+        @Html.ActionLink("Aggiugni prenotazione", "ListaClient", "Clients", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+    <div class="">
+        @Html.ActionLink("Mostra prenotazioni", "ReservationList", "Reservation", new { area = "" }, new { @class = "btn btn-success" })
+    </div>
+</div>
+
+<hr />
+
+<h2>Ricarca con query asincrone</h2>
+<div class="row row-cols-2">
+
+    <div>
+        <label>Ricerca per codice fiscale</label>
+        <input type="text" id="myInput" class="form-control" />
+        <button class="btn btn-success" id="myButton">Cerca per C.Fiscale</button>
+    </div>
+
+    <div class="">
+        <button class="btn btn-success" id="pensioneCompleta">
+            Ricercare il numero totale di prenotazioni per i soggiorni di tipo “pensione
+            completa
+        </button>
+    </div>
+</div>
+<div class="d-flex justify-content-center mt-3">
+    <ul id="result">
+    </ul>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#pensioneCompleta').click(function () {
+                $.ajax({
+                    method: "GET",
+                    url: "PensioneCompleta",
+
+                    success: function (data) {
+                        $('#result').html("")
+                        $('#result').append("<p>Risultati per Prenotazioni con pensione completa</p>")
+                        $.each(data, function (index, value) {
+                            $('#result').append("<p>" + "ID prenotazione: " + value.IdPrenotazione + " Cod.Fisc: " + value.cliente.CodiceFiscale + " Nome: " + value.cliente.Cognome + " Cognome: " + value.cliente.Nome + "</p>")
+                        })
+                    }
+                })
+            })
+            $('#myButton').click(function () {
+                var inputValue = $("#myInput").val();
+                $.ajax({
+                    method: "GET",
+                    url: "CercaDaCodFisc",
+                    data: { inputVal: inputValue },
+                    success: function (data) {
+                        $('#result').html("")
+                        $('#result').append("<p>Risultati per ricarca da codice fiscale</p>")
+                        $.each(data, function (index, value) {
+                            $('#result').append("<p> IdPrenotazione: " + value.IdPrenotazione + " - codFisc: " + value.cliente.CodiceFiscale + "</p>")
+                        })
+                    }
+                })
+            })
+        })
+    </script>
+}

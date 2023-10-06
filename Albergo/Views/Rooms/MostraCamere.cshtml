@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Albergo.Models.Camere>
+
+@{
+    ViewBag.Title = "MostraCamere";
+}
+
+<div>
+    <h4>Camere</h4>
+    <table class="table table-hover table-bordered container text-center">
+        <tr>
+            <th>Numero camera</th>
+            <th>Descrizione</th>
+            <th>Tipologia</th>
+            <th>Gestione</th>
+        </tr>
+        @foreach (Albergo.Models.Camere s in Model)
+        {
+            <tr>
+                <td>@s.Numero</td>
+                <td>@s.Descrizione</td>
+                <td>@s.Tipologia</td>
+                <td>
+                    @Html.ActionLink("✒", "ModificaCamera", "Rooms", new { id = s.Id }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("🗑", "EliminaCamera", "Rooms", new { id = s.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

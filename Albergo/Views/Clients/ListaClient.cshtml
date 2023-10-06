@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Albergo.Models.Clienti>
+@{
+    ViewBag.Title = "ListaClient";
+}
+
+<h2>Elenco Clienti</h2>
+
+<table class="table table-hover table-bordered container text-center">
+    <tr>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Codice Fiscale</th>
+        <th>Città</th>
+        <th>Provincia</th>
+        <th>Email</th>
+        <th>Telefono</th>
+        <th>Cellulare</th>
+        <th>Gestione</th>
+    </tr>
+    @foreach (Albergo.Models.Clienti c in Model)
+    {
+        <tr>
+            <td>@c.Nome</td>
+            <td>@c.Cognome</td>
+            <td>@c.CodiceFiscale</td>
+            <td>@c.Citta</td>
+            <td>@c.Provincia</td>
+            <td>@c.Email</td>
+            <td>@c.Telefono</td>
+            <td>@c.Cellulare</td>
+            <td>
+                @Html.ActionLink("➕", "AddReservation", "Reservation", new { id = c.Id }, new { @class = "btn btn-success" })
+                @Html.ActionLink("✒", "ModificaCliente", "Clients", new { id = c.Id }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("🗑", "EliminaCliente", "Clients", new { id = c.Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+</table>
